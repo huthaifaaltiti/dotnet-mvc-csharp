@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Home Page</title>
+</head>
+<body>
+    <h1>Welcome to the Home Page!</h1>
+    <p>This is a simple MVC application.</p>
+
+    <h2>Enter User ID:</h2>
+    <input type="number" id="userIdInput" min="1">
+    <button id="fetchButton">Fetch User</button>
+    <button id="fetchAllUsersButton">Fetch all users</button>
+
+    <h2>Fetched User:</h2>
+    <div id="userDetails">
+        <p>No data fetched for the provided user ID.</p>
+    </div>
+
+    <h2>All Users:</h2>
+    <ul id="allUsersList"></ul>
+
+    <script>
+        const fetchButton = document.getElementById('fetchButton');
+        const fetchAllUsersButton = document.getElementById('fetchAllUsersButton');
+        const userIdInput = document.getElementById('userIdInput');
+        const userDetails = document.getElementById('userDetails');
+        const allUsersList = document.getElementById('allUsersList');
+
+        fetchButton.addEventListener('click', async () => {
+            const userId = userIdInput.value;
+            if (!userId) {
+                userDetails.innerHTML = '<p>Please enter a valid user ID.</p>';
+                return;
+            }
+
+            const apiUrl = `/Home/GetUser?id=${userId}`;
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+
+            if (data) {
+                userDetails.innerHTML = `<p>Username: ${data.Username}</p><p>Email: ${data.Email}</p>`;
+            } else {
+                userDetails.innerHTML = '<p>No data fetched for the provided user ID.</p>';
+            }
+        });
+
+        fetchAllUsersButton.addEventListener('click', async () => {
+            const apiUrl = "/Home/GetAllUsers";
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+
+            if (data && data.length > 0) {
+                allUsersList.innerHTML = "";
+
+                data.forEach(user => {
+                    const li = document.createElement("li");
+                    li.textContent = `Username: ${user.Username}, Email: ${user.Email}, NatID: ${user.NationalNumber}`;
+                    allUsersList.appendChild(li);
+                });
+            } else {
+                allUsersList.innerHTML = '<p>No data for the users.</p>';
+            }
+        });
+    </script>
+</body>
+</html>
