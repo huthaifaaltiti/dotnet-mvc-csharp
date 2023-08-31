@@ -5,7 +5,7 @@
 </head>
 <body>
     <h1>Welcome to the Home Page!</h1>
-    <p>This is a simple MVC application.</p>
+    <p>This is a simple MVC application, which fetches data using API, that built locally.</p>
 
     <h2>Enter User ID:</h2>
     <input type="number" id="userIdInput" min="1">
@@ -50,7 +50,7 @@
             const response = await fetch(apiUrl);
             const data = await response.json();
 
-            if (data && data.length > 0) {
+            if (data.length > 0) {
                 allUsersList.innerHTML = "";
 
                 data.forEach(user => {

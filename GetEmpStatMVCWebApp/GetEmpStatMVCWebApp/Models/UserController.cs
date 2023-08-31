@@ -10,7 +10,6 @@ namespace GetEmpStatMVCWebApp.Controllers
     {
         public string Username { get; set; }
         public string Email { get; set; }
-
         public int NationalNumber { get; set; }
     }
 }

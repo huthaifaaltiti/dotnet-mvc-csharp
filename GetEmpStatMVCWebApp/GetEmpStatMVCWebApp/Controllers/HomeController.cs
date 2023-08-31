@@ -15,8 +15,6 @@ namespace GetEmpStatMVCWebApp.Controllers
             string apiUrl = "http://localhost/WebAPI/Api/users/";
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(apiUrl);
-            request.Method = WebRequestMethods.Http.Get;
-            request.Accept = "application/json";
 
             using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
             using (Stream stream = response.GetResponseStream())
@@ -28,8 +26,6 @@ namespace GetEmpStatMVCWebApp.Controllers
 
                 return View(users);
             }
-
-           
         }
 
         public ActionResult GetAllUsers()
@@ -37,8 +33,6 @@ namespace GetEmpStatMVCWebApp.Controllers
             string apiUrl = "http://localhost/WebAPI/Api/users/";
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(apiUrl);
-            request.Method = WebRequestMethods.Http.Get;
-            request.Accept = "application/json";
 
             using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
             using (Stream stream = response.GetResponseStream())
@@ -57,8 +51,6 @@ namespace GetEmpStatMVCWebApp.Controllers
             string apiUrl = $"http://localhost/WebAPI/Api/users/{id}";
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(apiUrl);
-            request.Method = WebRequestMethods.Http.Get;
-            request.Accept = "application/json";
 
             using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
             using (Stream stream = response.GetResponseStream())
