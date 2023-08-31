@@ -39,7 +39,10 @@
             const data = await response.json();
 
             if (data) {
-                userDetails.innerHTML = `<p>Username: ${data.Username}</p><p>Email: ${data.Email}</p>`;
+                userDetails.innerHTML = `<p>Username: ${data.Username}</p>
+                <p>Avg Salary: ${data.AvgSalary}</p>
+                <p>Largest Salary: ${data.LargestSalary}</p>
+                <p>Salary status: ${data.UserSalaryStatus}</p>`;
             } else {
                 userDetails.innerHTML = '<p>No data fetched for the provided user ID.</p>';
             }
