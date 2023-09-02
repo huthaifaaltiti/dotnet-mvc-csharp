@@ -1,70 +1,58 @@
-﻿<!DOCTYPE html>
+﻿@Model List<User>
+
+<!DOCTYPE html>
 <html>
 <head>
     <title>Home Page</title>
+    <script>
+        var users = @Html.Raw(Json.Encode(Model));
+
+        function fetchUser() {
+            var userIdInput = document.getElementById("userIdInput").value;
+            var userDetails = document.getElementById("userDetails");
+            var foundUser = null;
+
+            for (var i = 0; i < users.length; i++) {
+                var user = users[i];
+
+                if (user.NationalNumber === Number(userIdInput)) {
+                    foundUser = user;
+                    break; 
+                }
+            }
+
+            if (foundUser) {
+                userDetails.innerHTML = `<p>User Name: ${foundUser.Username} - 
+                Avg Salary: ${foundUser.AvgSalary} - User Salary Status: ${foundUser.UserSalaryStatus} 
+                - Largest Salary: ${foundUser.LargestSalary}</p>`;
+            } else {
+                //console.log("I entered out of for loop here");
+                userDetails.innerHTML = "<p>No data found for the provided user ID.</p>";
+            }
+        }
+    </script>
 </head>
 <body>
     <h1>Welcome to the Home Page!</h1>
     <p>This is a simple MVC application, which fetches data using API, that built locally.</p>
 
-    <h2>Enter User ID:</h2>
+    <h2>Enter User National Number:</h2>
     <input type="number" id="userIdInput" min="1">
-    <button id="fetchButton">Fetch User</button>
-    <button id="fetchAllUsersButton">Fetch all users</button>
-
+    <button id="fetchButton" onclick="fetchUser()">Fetch User</button>
+   
     <h2>Fetched User:</h2>
     <div id="userDetails">
-        <p>No data fetched for the provided user ID.</p>
+        
     </div>
 
     <h2>All Users:</h2>
-    <ul id="allUsersList"></ul>
-
-    <script>
-        const fetchButton = document.getElementById('fetchButton');
-        const fetchAllUsersButton = document.getElementById('fetchAllUsersButton');
-        const userIdInput = document.getElementById('userIdInput');
-        const userDetails = document.getElementById('userDetails');
-        const allUsersList = document.getElementById('allUsersList');
-
-        fetchButton.addEventListener('click', async () => {
-            const userId = userIdInput.value;
-            if (!userId) {
-                userDetails.innerHTML = '<p>Please enter a valid user ID.</p>';
-                return;
+    <ul>
+        @{
+            foreach (var user in Model)
+            {
+                <li>@user.Username - @user.NationalNumber</li>
             }
-
-            const apiUrl = `/Home/GetUser?id=${userId}`;
-            const response = await fetch(apiUrl);
-            const data = await response.json();
-
-            if (data) {
-                userDetails.innerHTML = `<p>Username: ${data.Username}</p>
-                <p>Avg Salary: ${data.AvgSalary}</p>
-                <p>Largest Salary: ${data.LargestSalary}</p>
-                <p>Salary status: ${data.UserSalaryStatus}</p>`;
-            } else {
-                userDetails.innerHTML = '<p>No data fetched for the provided user ID.</p>';
-            }
-        });
-
-        fetchAllUsersButton.addEventListener('click', async () => {
-            const apiUrl = "/Home/GetAllUsers";
-            const response = await fetch(apiUrl);
-            const data = await response.json();
-
-            if (data.length > 0) {
-                allUsersList.innerHTML = "";
-
-                data.forEach(user => {
-                    const li = document.createElement("li");
-                    li.textContent = `Username: ${user.Username}, Email: ${user.Email}, NatID: ${user.NationalNumber}`;
-                    allUsersList.appendChild(li);
-                });
-            } else {
-                allUsersList.innerHTML = '<p>No data for the users.</p>';
-            }
-        });
-    </script>
+        }
+    </ul>
 </body>
 </html>

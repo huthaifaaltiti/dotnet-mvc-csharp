@@ -27,41 +27,5 @@ namespace GetEmpStatMVCWebApp.Controllers
                 return View(users);
             }
         }
-
-        public ActionResult GetAllUsers()
-        {
-            string apiUrl = "http://localhost/WebAPI/Api/users/";
-
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(apiUrl);
-
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-            using (Stream stream = response.GetResponseStream())
-            using (StreamReader reader = new StreamReader(stream))
-            {
-                string responseData = reader.ReadToEnd();
-
-                List<User> users = JsonConvert.DeserializeObject<List<User>>(responseData);
-
-                return Json(users, JsonRequestBehavior.AllowGet);
-            }
-        }
-
-        public ActionResult GetUser(int id)
-        {
-            string apiUrl = $"http://localhost/WebAPI/Api/users/{id}";
-
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(apiUrl);
-
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-            using (Stream stream = response.GetResponseStream())
-            using (StreamReader reader = new StreamReader(stream))
-            {
-                string responseData = reader.ReadToEnd();
-
-                User user = JsonConvert.DeserializeObject<User>(responseData);
-
-                return Json(user, JsonRequestBehavior.AllowGet);
-            }
-        }
     }
 }
